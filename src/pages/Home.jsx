@@ -26,8 +26,35 @@ export default function Home() {
     setFormData(prev => ({ ...prev, [section]: data }));
   };
 
+  const validateForm = () => {
+    const info = formData.styleInfo;
+    const requiredFields = [
+      'companyName', 'item', 'styleNumber', 'season', 
+      'year', 'status', 'department', 'termsOfSales', 
+      'division', 'costingBy', 'currency'
+    ];
+
+    for (let field of requiredFields) {
+      if (!info[field] || String(info[field]).trim() === "") {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Please fill in all required fields in Style Information.',
+        icon: 'error',
+        confirmButtonText: 'Understood',
+        confirmButtonColor: '#ef4444'
+      });
+      return;
+    }
 
     setFinalSubmission(formData);
 
@@ -80,23 +107,14 @@ export default function Home() {
           onUpdate={(val) => updateSection('cmCosts', val)} 
         />
 
-        <div className="flex justify-end pt-4">
+        <div className="flex justify-end pt-4 pb-10">
           <button 
             type="submit" 
-            className="w-full md:w-auto bg-[#00C2CB] text-white px-12 py-3 rounded shadow-lg font-bold hover:bg-blue-700 transition-all active:scale-95 cursor-pointer uppercase"
+            className="w-full md:w-auto bg-[#00C2CB] text-white px-12 py-3 rounded shadow-lg font-bold hover:bg-[#00aeb6] transition-all active:scale-95 cursor-pointer uppercase text-xs"
           >
             SAVE ALL DATA
           </button>
         </div>
-
-        {/* {finalSubmission && (
-          <div className="p-4 bg-green-50 border border-green-200 rounded shadow-sm">
-            <h3 className="font-bold text-green-700 mb-2 text-sm uppercase">Final Submitted State:</h3>
-            <pre className="text-[10px] md:text-xs bg-white p-3 rounded border overflow-auto max-h-64 text-slate-700">
-              {JSON.stringify(finalSubmission, null, 2)}
-            </pre>
-          </div>
-        )} */}
       </form>
     </div>
   );
