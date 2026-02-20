@@ -83,7 +83,7 @@ export default function Home() {
         <div className="flex justify-end pt-4">
           <button 
             type="submit" 
-            className="w-full md:w-auto bg-blue-600 text-white px-12 py-3 rounded shadow-lg font-bold hover:bg-blue-700 transition-all active:scale-95 cursor-pointer uppercase"
+            className="w-full md:w-auto bg-[#00C2CB] text-white px-12 py-3 rounded shadow-lg font-bold hover:bg-blue-700 transition-all active:scale-95 cursor-pointer uppercase"
           >
             SAVE ALL DATA
           </button>
