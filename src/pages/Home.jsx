@@ -1,11 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 import StyleInfoSection from '../components/StyleInfo';
 import Credential from '../components/Credential';
 import FabricCost from '../components/FabricCost';
 import TrimCost from '../components/TrimCost';
 import AccessoriesCost from '../components/AccessoriesCost';
 import ApplicationCost from '../components/ApplicationCost';
-import CostOfManufacturing from '../components/CostOfManufacturing'; // 7th Component
+import CostOfManufacturing from '../components/CostOfManufacturing';
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -15,8 +17,10 @@ export default function Home() {
     trimCosts: [{ id: 1, ref: '', name: '', unit: '', qty: '', price: '', excs: '', total: 0 }],
     accessoriesCosts: [{ id: 1, ref: '', name: '', unit: '', qty: '', price: '', excs: '', total: 0, depend: 'DTM' }],
     applicationCosts: [{ id: 1, ref: '', name: '', type: '', placement: '', category: '', price: '' }],
-    cmCosts: [{ id: 1, name: '', price: '' }], // CM State
+    cmCosts: [{ id: 1, name: '', price: '' }],
   });
+
+  const [finalSubmission, setFinalSubmission] = useState(null);
 
   const updateSection = (section, data) => {
     setFormData(prev => ({ ...prev, [section]: data }));
@@ -24,12 +28,20 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Successfully Captured Form Data:", formData);
-    alert("Success! Data has been captured.");
+
+    setFinalSubmission(formData);
+
+    Swal.fire({
+      title: 'Success!',
+      text: 'Data has been captured and stored in state.',
+      icon: 'success',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#4338ca',
+      timer: 2000
+    });
   };
 
   return (
-    // Mobile-er jonno p-3 ebong desktop-er jonno p-6
     <div className="p-3 md:p-6 bg-slate-50 min-h-screen">
       <form onSubmit={handleSubmit} className="max-w-7xl mx-auto space-y-6">
         
@@ -43,7 +55,6 @@ export default function Home() {
           onUpdate={(val) => updateSection('credentials', val)} 
         />
 
-        {/* Shob component-er vitor overflow-x-auto thakay era phone-e auto scroll hobe */}
         <FabricCost 
           rows={formData.fabricCosts} 
           onUpdate={(val) => updateSection('fabricCosts', val)} 
@@ -69,7 +80,6 @@ export default function Home() {
           onUpdate={(val) => updateSection('cmCosts', val)} 
         />
 
-        {/* Action Button: Mobile-e width full thakbe */}
         <div className="flex justify-end pt-4">
           <button 
             type="submit" 
@@ -79,13 +89,14 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Debug Preview: Mobile-e scrollable kora hoyeche */}
-        <div className="p-4 bg-white border rounded shadow-sm">
-          <h3 className="font-bold text-red-500 mb-2 text-sm uppercase">Live State Preview:</h3>
-          <pre className="text-[10px] md:text-xs bg-gray-50 p-3 rounded border overflow-auto max-h-64 text-slate-700">
-            {JSON.stringify(formData, null, 2)}
-          </pre>
-        </div>
+        {/* {finalSubmission && (
+          <div className="p-4 bg-green-50 border border-green-200 rounded shadow-sm">
+            <h3 className="font-bold text-green-700 mb-2 text-sm uppercase">Final Submitted State:</h3>
+            <pre className="text-[10px] md:text-xs bg-white p-3 rounded border overflow-auto max-h-64 text-slate-700">
+              {JSON.stringify(finalSubmission, null, 2)}
+            </pre>
+          </div>
+        )} */}
       </form>
     </div>
   );
